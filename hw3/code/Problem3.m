@@ -1,0 +1,105 @@
+% Housekeeping
+clear all
+close all
+clc
+
+% Define obstacle vertices
+W1_WO1 = [1,1; 2,1; 2,5; 1,5];
+W1_WO2 = [3,4; 4,4; 4,12; 3,12];
+W1_WO3 = [3,12; 12,12; 12,13; 3,13];
+W1_WO4 = [12,5; 13,5; 13,13; 12,13];
+W1_WO5 = [6,5; 12,5; 12,6; 6,6];
+W1 = [W1_WO1 W1_WO2 W1_WO3 W1_WO4 W1_WO5];
+
+W2_WO1 = [-6,-6; 25,-6; 25,-5; -6,-5];
+W2_WO2 = [-6,5; 30,5; 30,6; -6,6];
+W2_WO3 = [-6,-5; -5,-5; -5,5; -6,5];
+W2_WO4 = [4,-5; 5,-5; 5,1; 4,1];
+W2_WO5 = [9,0; 10,0; 10,5; 9,5];
+W2_WO6 = [14,-5; 15,-5; 15,1; 14,1];
+W2_WO7 = [19,0; 20,0; 20,5; 19,5];
+W2_WO8 = [24,-5; 25,-5; 25,1; 24,1];
+W2_WO9 = [29,0; 30,0; 30,5; 29,5];
+W2 = [W2_WO1 W2_WO2 W2_WO3 W2_WO4 W2_WO5 W2_WO6 W2_WO7 W2_WO8 W2_WO9];
+%% Plot Path Map 1_________________________________________________
+
+% Plot obstacles
+for i=1:2:length(W1)
+   plot([W1(:,i);W1(1,i)],[W1(:,i+1);W1(1,i+1)],'b');
+   hold on
+end
+
+mat = csvread('path_3_map1.csv');
+meta_data = num2cell(mat(1,1:5));
+[top,bottom,left,buffer,scale_factor] = deal(meta_data{:}); 
+mat = mat(2:end,1:end-3);
+start = [0,0];
+goal = [10,10];
+h = zeros(3,1);
+h(1) = plot(start(1),start(2),'om','Linewidth',2);
+hold on
+h(3) = plot(goal(1),goal(2),'xk','Linewidth',2);
+h(2) = plot((mat(:,1)-abs(left)-buffer)/scale_factor,(mat(:,2)-abs(bottom)-buffer)/scale_factor,'b','Linewidth',2);
+legend(h,'start','path','goal')
+xlabel('q_1')
+ylabel('q_2')
+title('Wavefront Map 1')
+grid on
+grid minor
+x0=10;
+y0=10;
+width=1000;
+height=400;
+set(gcf,'position',[x0,y0,width,height])
+
+len_path1 = (length(mat)-1)/scale_factor;
+
+%% Plot Path Map 2_________________________________________________
+figure
+% Plot obstacles
+for i=1:2:length(W2)
+   plot([W2(:,i);W2(1,i)],[W2(:,i+1);W2(1,i+1)],'b');
+   hold on
+end
+
+mat = csvread('path_3_map2.csv');
+meta_data = num2cell(mat(1,1:5));
+[top,bottom,left,buffer,scale_factor] = deal(meta_data{:}); 
+mat = mat(2:end,1:end-3);
+start = [0,0];
+goal = [35,0];
+h1 = zeros(3,1);
+h1(1) = plot(start(1),start(2),'om','Linewidth',2);
+hold on
+h1(3) = plot(goal(1),goal(2),'xk','Linewidth',2);
+h1(2) = plot((mat(:,1)-abs(left)-buffer)/scale_factor,(mat(:,2)-abs(bottom)-buffer)/scale_factor,'b','Linewidth',2);
+legend(h1,'start','path','goal')
+xlabel('q_1')
+ylabel('q_2')
+title('Wavefront Map 2')
+grid on
+grid minor
+x0=100;
+y0=50;
+width=800;
+height=700;
+set(gcf,'position',[x0,y0,width,height])
+len_path2 = (length(mat)-1)/scale_factor;
+
+%% b)
+fprintf("The Length of the path for Map 1 = %i\n",len_path1)
+fprintf("The Length of the path for Map 2 = %i\n",len_path2)
+
+%% c)
+fprintf("Yes, since the wavefront algorithm is a resolution complete\n")
+fprintf("algorithm. In other words, the more fine the grid is, the closer\n")
+fprintf("the robot can travel against the obstacles and in free space\n")
+fprintf("to minimize the Manhattan distance to goal\n")
+
+%% d)
+fprintf("This planner is resolution complete so as long as the resolution\n")
+fprintf("is high enough, there will be a path (as seen). The gradient descent\n")
+fprintf("planner on the other hand presented local minimas as seen on the second\n")
+fprintf("map and no path was found. However the wavefront planner, because it is\n")
+fprintf("resolution dependent, gives non optimal paths. The gradient descent planner\n")
+fprintf("gave a shorter path for map 1 than the wavefront planner\n")

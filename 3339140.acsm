@@ -1,0 +1,37 @@
+<fulfillmentToken fulfillmentType="loan" auth="user" xmlns="http://ns.adobe.com/adept">
+  <distributor>urn:uuid:9cb786e8-586a-4950-8901-fff8d2ee6025</distributor>
+  <operatorURL>http://acs.ebookcentral.proquest.com/fulfillment</operatorURL>
+  <transaction>3339140_250829249</transaction>
+  <expiration>2020-09-09T15:54:17-07:00</expiration>
+  <resourceItemInfo>
+    <resource>urn:uuid:00000000-0000-0000-0000-000003339140</resource>
+    <resourceItem>0</resourceItem>
+    <metadata>
+      <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/">Principles of Robot Motion</dc:title>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Choset, Howie; Burgard, Wolfram; Hutchinson, Seth</dc:creator>
+      <dc:publisher xmlns:dc="http://purl.org/dc/elements/1.1/">MIT Press</dc:publisher>
+      <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">3339140</dc:identifier>
+      <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">application/pdf</dc:format>
+    </metadata>
+    <licenseToken>
+      <resource>urn:uuid:00000000-0000-0000-0000-000003339140</resource>
+      <permissions>
+        <display>
+          <duration>1814399</duration>
+        </display>
+        <excerpt>
+          <duration>1814399</duration>
+          <count initial="127" max="127" incrementInterval="14286"/>
+        </excerpt>
+        <print>
+          <duration>1814399</duration>
+          <count initial="64" max="64" incrementInterval="28349"/>
+        </print>
+        <play>
+          <duration>1814399</duration>
+        </play>
+      </permissions>
+    </licenseToken>
+  </resourceItemInfo>
+  <hmac>ZwUs/W5FZIFsbP9CRVRyV/oi6YA=</hmac>
+</fulfillmentToken>

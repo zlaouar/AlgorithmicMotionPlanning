@@ -1,0 +1,81 @@
+%% Housekeeping
+clear all
+close all
+clc
+
+set(groot,'defaultTextInterpreter','tex')
+
+%% Problem 4
+
+% Plot cspace
+mat = csvread('cspace_map.csv');
+subplot(1,2,2)
+%figure
+imax = imshow(double(~mat),'InitialMagnification','fit');
+xticklabels({'0','$\frac{\pi}{4}$','$\frac{\pi}{2}$','$\frac{3\pi}{4}$',...
+       '$\pi$','$\frac{5\pi}{4}$','$\frac{3\pi}{2}$','$\frac{7\pi}{4}$','$2\pi$'})
+yorder = {'0','$\frac{\pi}{4}$','$\frac{\pi}{2}$','$\frac{3\pi}{4}$',...
+       '$\pi$','$\frac{5\pi}{4}$','$\frac{3\pi}{2}$','$\frac{7\pi}{4}$','$2\pi$'};
+yorder = flip(yorder);
+yticklabels(yorder)
+set(imax.Parent,'TickLabelInterpreter','latex');
+set(imax.Parent, 'XTick', linspace(0,100,9))
+set(imax.Parent, 'YTick', linspace(0,100,9))
+axis on;
+hold on
+path = csvread('path_4.csv');
+meta_data = num2cell(path(1,1:4));
+[startx,starty,goalx,goaly] = deal(meta_data{:}); 
+path = path(2:end,1:end-2);
+[w,h] = size(mat);
+h1 = zeros(3,1);
+h1(1) = plot(startx+1,h-starty-1,'om','Linewidth',2);
+hold on
+h1(3) = plot(goalx,h-goaly-1,'xk','Linewidth',2);
+h1(2) = plot(path(:,1),h-path(:,2)-1,'b','Linewidth',2);
+legend(h1,'start','path','goal')
+
+title('C-space')
+xlabel('\theta_1')
+ylabel('\theta_2')
+
+
+% Plot 2-link robot __________________________________________
+a1 = 1;
+a2 = 1;
+vec1 = (path(:,1)./w)*2*pi;
+vec2 = (path(:,2)./h)*2*pi;
+subplot(1,2,1)
+theta1vec = [vec1(1),vec1(round(length(vec1)/4)),vec1(2*round(length(vec1)/4)),...
+            vec1(3*round(length(vec1)/4)),vec1(end)];
+theta2vec = [vec2(1),vec2(round(length(vec2)/4)),vec2(2*round(length(vec2)/4)),...
+            vec2(3*round(length(vec2)/4)),vec2(end)];
+pos = zeros(1,length(theta1vec));
+alpha_vec = linspace(0,1,length(theta1vec));
+for i=1:length(theta1vec)
+    xs = [0 a1*cos(theta1vec(i)) (a1*cos(theta1vec(i))+ a2*cos(theta1vec(i)+theta2vec(i)))];
+    ys = [0 a1*sin(theta1vec(i)) (a1*sin(theta1vec(i))+ a2*sin(theta1vec(i)+theta2vec(i)))];
+
+    plot1 = plot(xs,ys,'b','Linewidth',8);
+    plot1.Color(4) = alpha_vec(i);
+    hold on
+    s = scatter(xs,ys,'or','Linewidth',8);
+    s.MarkerFaceAlpha = .2;
+
+end
+
+% Plot obstacle
+X = [-0.25 -2; -0.25 -2; 0.25 2; 0.25 2];
+Y = [1.1 -0.5; 2 -0.3; 2 -0.3; 1.1 -0.5];
+fill(X,Y,1)
+grid on
+grid minor
+x0=10;
+y0=10;
+width=1000;
+height=400;
+
+set(gcf,'position',[x0,y0,width,height])
+title('Workspace')
+xlabel('x-position')
+ylabel('y-position')
